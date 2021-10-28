@@ -1,0 +1,21 @@
+set wdir ./
+set iges 50g_m^2-94%-20%-0.15g_m-0.028m-2ext-1comp-50%porosity-0.igs
+ic_set_meshing_params global 0
+ic_wb_set_parameters 1 0 1 0 0 1 1 0 1 {SDFEA;DDM} 1{} 4 1 Default 0 0 0 {} {} 0 0 0 {} 0 0.001 0 0
+ic_wb_brep_read $wdir/$iges 1 0 0
+ic_boco_solver
+ic_boco_clear_icons
+ic_set_global geo_cad 0 toptol_userset
+ic_set_global geo_cad 0.0005 toler
+ic_geo_new_family GEOM
+ic_boco_set_part_color GEOM
+
+ic_geo_new_family CIR_PNT
+ic_geo_new_family LIN_PNT
+set crvlist [ic_geo_get_objects curve]
+set x025 0.25
+set x050 0.50
+set x075 0.75
+foreach crv $crvlist {if "[ic_geo_crv_is_arc $crv] == 1" {[ic_geo_cre_pnt_on_crv_at_par CIR_PNT C1VERT[string range $crv 4 6] $x025 $crv] [ic_geo_cre_pnt_on_crv_at_par CIR_PNT C2VERT[string range $crv 4 6] $x050 $crv] [ic_geo_cre_pnt_on_crv_at_par CIR_PNT C2VERT[string range $crv 4 6] $x075 $crv]} }
+set pntlist [ic_geo_get_objects point]	
+foreach pnt $pntlist {if "[ic_geo_crv_is_arc $crv] == 1" {[ic_geo_cre_pnt_on_crv_at_par CIR_PNT C1VERT[string range $crv 4 6] $x025 $crv] [ic_geo_cre_pnt_on_crv_at_par CIR_PNT C2VERT[string range $crv 4 6] $x050 $crv] [ic_geo_cre_pnt_on_crv_at_par CIR_PNT C2VERT[string range $crv 4 6] $x075 $crv]} }
